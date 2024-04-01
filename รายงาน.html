@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายการรายรับและรายจ่าย</title>
+    <style>
+             .navbar {
+        overflow: hidden;
+        background-color: #333;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        margin-left: 8px;
+    }
+
+    .navbar a {
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+    }
+
+    .navbar a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+
+    .navbar a.active {
+        background-color: #555;
+        color: white;
+    }        
+
+        .container {
+            text-align: center;
+          
+        }
+
+        #yearFilter, #monthFilter, #dayFilter {
+            margin-right: 10px; /* เพิ่มระยะห่างระหว่างปุ่ม */
+        }
+
+        /* เพิ่ม CSS สำหรับปุ่ม dropdown */
+        select {
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f2f2f2;
+            cursor: pointer;
+        }
+
+        select:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* เพิ่ม CSS สำหรับปุ่ม dropdown เมื่อกด */
+        select:focus {
+            outline: none;
+            background-color: #ddd;
+        }
+        /* CSS สำหรับการจัดรูปแบบให้สวยงาม */
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif; /* เปลี่ยนแบบอักษรให้เหมาะกับทุกเครื่อง */
+            margin: 0; /* ลบระยะขอบของหน้าเว็บ */
+            padding: 0; /* ลบระยะขอบของหน้าเว็บ */
+        }
+
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000; /* จัดให้ Navbar อยู่ด้านบนสุด */
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .navbar a.active {
+            background-color: #555;
+            color: white;
+        }        
+
+        .container {
+            margin-top: 80px; /* ระยะห่างด้านบน */
+            text-align: center; /* จัดให้เนื้อหาตรงกลาง */
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 70%;
+            margin: auto; /* จัดให้ตารางอยู่ตรงกลาง */
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: center;
+            padding: 8px;
+        }
+        
+        th {
+            background-color: #333;
+            color: white;
+        }
+
+        .income {
+            color: green;
+        }
+
+        .expense {
+            color: red;
+        }
+
+        #summary {
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            text-align: center;
+            
+        }
+
+        #summary h2 {
+            margin-bottom: 10px;
+            
+        }
+
+        #summary p {
+            margin: 5px 0;
+        }
+
+        .filter-buttons {
+            text-align: center;
+            margin-bottom: 10px; /* เพิ่ม margin-bottom เพื่อให้ไม่ติดกับตาราง */
+        }
+
+        .filter-button {
+            padding: 8px 20px;
+            margin: 0 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f2f2f2;
+            cursor: pointer;
+            margin-top: 40px;
+        }
+
+        .filter-button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .filter-button.active {
+            background-color: #4caf50;
+            color: #fff;
+        }
+
+        /* CSS สำหรับปุ่ม dropdown */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .h {
+            margin-top: 70px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="เพิ่มข้อมูลลูกหนี้.html">เพิ่มข้อมูลลูกหนี้</a>
+        <a href="ตารางลูกหนี้.html">ตารางลูกหนี้</a>
+        <a href="สร้างสัญญา.html">สร้างสัญญา</a>
+        <a href="ตารางสัญญา.html">ตารางสัญญา</a>
+        <a href="คืนเงิน.html">คืนเงิน</a>
+        <a href="ตารางคืนเงิน.html">ตารางคืนเงิน</a>
+        <a href="ยึดทรัพย์.html">ยึดทรัพย์</a>
+        <a href="ตารางยึดทรัพย์.html">ตารางยึดทรัพย์</a>
+        <a  href="ขายทรัพย์.html">ขายทรัพย์</a>
+        <a href="ตารางขายทรัพย์.html">ตารางขายทรัพย์</a>
+        <a href="รายได้เเละค่าใช้จ่าย.html">รายได้อื่นๆเเละค่าใช้จ่าย</a>
+        <a href="ตารางรายได้เเละค่าใช้จ่าย.html">ตารางรายได้อื่นๆเเละค่าใช้จ่าย</a>
+        <a class="active"href="รายงาน.html">รายงานผล</a>
+        <a href="ตั้งค่า.html">ตั้งค่า</a>
+
+    </div>
+
+    <div class="navbar">
+        <!-- สร้าง Navbar สำหรับนำทาง -->
+    </div>
+
+ 
+    <div id="summary">
+        <h2 class="h">สรุปผล</h2>
+        <p>รายรับรวม: <span id="totalIncome"></span></p>
+        <p>รายจ่ายรวม: <span id="totalExpense"></span></p>
+        <p>กำไร/ขาดทุนรวม: <span id="totalProfitLoss"></span></p>
+    </div>
+</div>
+
+
+
+<div class="container">
+    <!-- เลือกปี -->
+    <select id="yearFilter" onchange="filter()">
+        <option value="">ทั้งหมด</option>
+        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+        <option value="2026">2026</option>
+        <!-- Add options dynamically based on available years in your data -->
+    </select>
+
+    <!-- เลือกเดือน -->
+    <select id="monthFilter" onchange="filter()">
+        <option value="">ทั้งหมด</option>
+        <option value="01">มกราคม</option>
+        <option value="02">กุมภาพันธ์</option>
+        <option value="03">มีนาคม</option>
+        <option value="04">เมษายน</option>
+        <option value="05">พฤษภาคม</option>
+        <option value="06">มิถุนายน</option>
+        <option value="07">กรกฎาคม</option>
+        <option value="08">สิงหาคม</option>
+        <option value="09">กันยายน</option>
+        <option value="10">ตุลาคม</option>
+        <option value="11">พฤศจิกายน</option>
+        <option value="12">ธันวาคม</option>
+    </select>
+
+    <!-- เลือกวัน -->
+    <select id="dayFilter" onchange="filter()">
+        <option value="">ทั้งหมด</option>
+        <!-- Add options for days from 1 to 31 -->
+        <option value="01">วันที่ 1</option>
+        <option value="02">วันที่ 2</option>
+        <option value="03">วันที่ 3</option>
+        <option value="04">วันที่ 4</option>
+        <option value="05">วันที่ 5</option>
+        <option value="06">วันที่ 6</option>
+        <option value="07">วันที่ 7</option>
+        <option value="08">วันที่ 8</option>
+        <option value="09">วันที่ 9</option>
+        <option value="10">วันที่ 10</option>
+        <option value="11">วันที่ 11</option>
+        <option value="12">วันที่ 12</option>
+        <option value="13">วันที่ 13</option>
+        <option value="14">วันที่ 14</option>
+        <option value="15">วันที่ 15</option>
+        <option value="16">วันที่ 16</option>
+        <option value="17">วันที่ 17</option>
+        <option value="18">วันที่ 18</option>
+        <option value="19">วันที่ 19</option>
+        <option value="20">วันที่ 20</option>
+        <option value="21">วันที่ 21</option>
+        <option value="22">วันที่ 22</option>
+        <option value="23">วันที่ 23</option>
+        <option value="24">วันที่ 24</option>
+        <option value="25">วันที่ 25</option>
+        <option value="26">วันที่ 26</option>
+        <option value="27">วันที่ 27</option>
+        <option value="28">วันที่ 28</option>
+        <option value="29">วันที่ 29</option>
+        <option value="30">วันที่ 30</option>
+        <option value="31">วันที่ 31</option>
+    </select>
+</div>
+
+    <div class="container"></div>
+        <!-- เพิ่ม dropdown สำหรับเลือกปี -->
+      
+    <div class="filter-buttons">
+
+        <table id="transactions">
+            
+            <thead>
+                <tr>
+                    <th>วันที่</th>
+                    <th>รายการ</th>
+                    <th>ประเภท</th>
+                    <th>จำนวนเงิน</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2024-03-01</td>
+                    <td>เงินเดือน</td>
+                    <td class="income">รายรับ</td>
+                    <td class="income">10,000</td>
+                </tr>
+                <tr>
+                    <td>2024-05-01</td>
+                    <td>เงินเดือน</td>
+                    <td class="income">รายรับ</td>
+                    <td class="income">10,000</td>
+                </tr>
+                <tr>
+                    <td>2024-03-02</td>
+                    <td>อาหาร</td>
+                    <td class="expense">รายจ่าย</td>
+                    <td class="expense">200</td>
+                </tr>
+                <!-- เพิ่มแถวเพิ่มเติมตามต้องการ -->
+            </tbody>
+        </table>
+       
+
+    <script>
+        window.onload = function() {
+            calculateSummary();
+        };
+
+        function calculateSummary() {
+            var transactions = document.getElementById('transactions').getElementsByTagName('tr');
+            var totalIncome = 0;
+            var totalExpense = 0;
+
+            for (var i = 1; i < transactions.length; i++) {
+                var cells = transactions[i].getElementsByTagName('td');
+                var amount = parseInt(cells[3].innerText.replace(',', ''));
+
+                if (cells[2].innerText.trim() === 'รายรับ') {
+                    totalIncome += amount;
+                } else if (cells[2].innerText.trim() === 'รายจ่าย') {
+                    totalExpense += amount;
+                }
+            }
+
+            document.getElementById('totalIncome').innerText = totalIncome.toLocaleString();
+            document.getElementById('totalExpense').innerText = totalExpense.toLocaleString();
+
+            var totalProfitLoss = totalIncome - totalExpense;
+            var profitLossText = totalProfitLoss >= 0 ? 'กำไร' : 'ขาดทุน';
+            document.getElementById('totalProfitLoss').innerText = profitLossText + ' ' + Math.abs(totalProfitLoss).toLocaleString();
+        }
+
+        function filter() {
+            var year = document.getElementById('yearFilter').value;
+            var month = document.getElementById('monthFilter').value;
+            var day = document.getElementById('dayFilter').value;
+
+            var transactions = document.getElementById('transactions').getElementsByTagName('tr');
+            var totalIncome = 0;
+            var totalExpense = 0;
+
+            for (var i = 1; i < transactions.length; i++) {
+                var cells = transactions[i].getElementsByTagName('td');
+                var transactionYear = cells[0].innerText.split('-')[0];
+                var transactionMonth = cells[0].innerText.split('-')[1];
+                var transactionDay = cells[0].innerText.split('-')[2];
+
+                if ((year === '' || transactionYear === year) && 
+                    (month === '' || transactionMonth === month) && 
+                    (day === '' || transactionDay === day)) {
+                    var amount = parseInt(cells[3].innerText.replace(',', ''));
+
+                    if (cells[2].innerText.trim() === 'รายรับ') {
+                        totalIncome += amount;
+                    } else if (cells[2].innerText.trim() === 'รายจ่าย') {
+                        totalExpense += amount;
+                    }
+                    transactions[i].style.display = ''; // Show rows that match all selected filters
+                } else {
+                    transactions[i].style.display = 'none'; // Hide rows that don't match
+                }
+            }
+
+            document.getElementById('totalIncome').innerText = totalIncome.toLocaleString();
+            document.getElementById('totalExpense').innerText = totalExpense.toLocaleString();
+
+            var totalProfitLoss = totalIncome - totalExpense;
+            var profitLossText = totalProfitLoss >= 0 ? 'กำไร' : 'ขาดทุน';
+            document.getElementById('totalProfitLoss').innerText = profitLossText + ' ' + Math.abs(totalProfitLoss).toLocaleString();
+        }
+    </script>
+   
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ขายทรัพย์</title>
+<style>
+    .navbar {
+        overflow: hidden;
+        background-color: #333;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        margin-left: 15px;
+    }
+
+    .navbar a {
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+    }
+
+    .navbar a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+
+    .navbar a.active {
+        background-color: #555;
+        color: white;
+    }
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        
+    }
+
+    .container {
+        width: 50%;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    input[type="file"] {
+        margin-bottom: 20px;
+    }
+
+    input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        float: right;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #45a049;
+    }
+</style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="เพิ่มข้อมูลลูกหนี้.html">เพิ่มข้อมูลลูกหนี้</a>
+        <a href="ตารางลูกหนี้.html">ตารางลูกหนี้</a>
+        <a href="สร้างสัญญา.html">สร้างสัญญา</a>
+        <a href="ตารางสัญญา.html">ตารางสัญญา</a>
+        <a href="คืนเงิน.html">คืนเงิน</a>
+        <a href="ตารางคืนเงิน.html">ตารางคืนเงิน</a>
+        <a href="ยึดทรัพย์.html">ยึดทรัพย์</a>
+        <a href="ตารางยึดทรัพย์.html">ตารางยึดทรัพย์</a>
+        <a class="active" href="ขายทรัพย์.html">ขายทรัพย์</a>
+        <a href="ตารางขายทรัพย์.html">ตารางขายทรัพย์</a>
+        <a href="รายได้เเละค่าใช้จ่าย.html">รายได้อื่นๆเเละค่าใช้จ่าย</a>
+        <a href="ตารางรายได้เเละค่าใช้จ่าย.html">ตารางรายได้อื่นๆเเละค่าใช้จ่าย</a>
+        <a href="รายงาน.html">รายงาน</a>
+        <a href="ตั้งค่า.html">ตั้งค่า</a>
+    </div>
+
+<div class="container">
+  <h2>ขายทรัพย์</h2>
+  <form action="submit_debtor_info.php" method="POST" enctype="multipart/form-data">
+
+    <label for="number">วันที่:</label>
+    <input type="date" id="number" name="number">
+
+    <label for="contract_id">รหัสขายทรัพย์:</label>
+    <input type="text" id="contract_id" name="contract_id">
+
+    <label for="contract_id">ยอดหนี้รวมที่ติด</label>
+    <input type="text" id="contract_id" name="contract_id">
+
+    <label for="id_card">เลขบัตรประชาชน:</label>
+    <input type="text" id="id_card" name="id_card" pattern="\d{13}" title="กรุณากรอกเลขบัตรประชาชน 13 หลัก" required>
+    
+    <label for="first_name">ชื่อ:</label>
+    <input type="text" id="first_name" name="first_name" required>
+
+    <label for="last_name">นามสกุล:</label>
+    <input type="text" id="last_name" name="last_name" required>
+
+    <label for="principal_amount">ทรัพย์ที่ขาย:</label>
+    <input type="text" id="principal_amount" name="principal_amount" required>
+
+    <label for="principal_slip_image">รูปทรัพย์ที่ขาย:</label>
+    <input type="file" id="principal_slip_image" name="principal_slip_image" accept="image/*" required>
+
+
+    <label for="contract_id">ยอดเงินขายทรัพย์:</label>
+    <input type="text" id="contract_id" name="contract_id">
+
+    <label for="principal_slip_image">รูปสลิปที่ขาย:</label>
+    <input type="file" id="principal_slip_image" name="principal_slip_image" accept="image/*" required>
+
+    
+    
+
+    <input type="submit" value="บันทึก">
+  </form>
+</div>
+
+</body>
+</html>

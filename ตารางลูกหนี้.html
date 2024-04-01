@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ตารางลูกหนี้</title>
+<style>
+  
+  .search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.search-container input[type=text] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+}
+
+.search-container button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-container button:hover {
+  background-color: #45a049;
+}
+
+
+.search-container2 {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* จัดให้อยู่ตรงกลางตามแนวตั้ง */
+  margin-bottom: 20px;
+}
+
+.search-container2 input[type=text] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  margin-right: 5px; /* เพิ่มระยะห่างของ input กับปุ่มค้นหา */
+}
+
+.search-container2 button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-container2 button:hover {
+  background-color: #45a049;
+}
+
+.search-container2 select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  margin-left: 5px; /* เพิ่มระยะห่างของปุ่มค้นหา กับ dropdown */
+}
+
+
+
+
+    .navbar {
+        overflow: hidden;
+        background-color: #333;
+        position: fixed;
+        top: 0;
+        width: 100%;
+    }
+
+    .navbar a {
+        float: left;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+    }
+
+    .navbar a:hover {
+        background-color: #ddd;
+        color: black;
+    }
+
+    .navbar a.active {
+        background-color: #555;
+        color: white;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin-top: 100px;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 60%;
+        margin: auto;
+        margin-top: 80px;
+    }
+
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #333;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    .s {
+    color: green;
+}
+
+.b {
+    color: red;
+}
+.w {
+    color: rgb(26, 133, 233);
+}
+
+.l {
+    color: rgb(242, 160, 9);
+}
+
+
+</style>
+</head>
+<body>
+  <div class="navbar">
+    <a href="เพิ่มข้อมูลลูกหนี้.html">เพิ่มข้อมูลลูกหนี้</a>
+    <a class="active" href="ตารางลูกหนี้.html">ตารางลูกหนี้</a>
+    <a href="สร้างสัญญา.html">สร้างสัญญา</a>
+    <a href="ตารางสัญญา.html">ตารางสัญญา</a>
+    <a href="คืนเงิน.html">คืนเงิน</a>
+    <a href="ตารางคืนเงิน.html">ตารางคืนเงิน</a>
+    <a href="ยึดทรัพย์.html">ยึดทรัพย์</a>
+    <a href="ตารางยึดทรัพย์.html">ตารางยึดทรัพย์</a>
+    <a  href="ขายทรัพย์.html">ขายทรัพย์</a>
+    <a href="ตารางขายทรัพย์.html">ตารางขายทรัพย์</a>
+    <a href="รายได้เเละค่าใช้จ่าย.html">รายได้อื่นๆเเละค่าใช้จ่าย</a>
+    <a href="ตารางรายได้เเละค่าใช้จ่าย.html">ตารางรายได้อื่นๆเเละค่าใช้จ่าย</a>
+    <a href="รายงาน.html">รายงาน</a>
+    <a href="ตั้งค่า.html">ตั้งค่า</a>
+</div>
+
+<h2 style="text-align:center;">ตารางลูกหนี้</h2>
+
+<div class="search-container">
+  <input type="text" id="searchInput" placeholder="Search...">
+  <button type="button" onclick="searchTable()">ค้นหาเลขบัตรประชาชน</button>
+</div>
+
+<script>
+function searchTable() {
+  var input, filter, table, tr, td, i, j, txtValue;
+  input = document.getElementById("searchInput");
+  filter = input.value.trim(); // ตัดช่องว่างที่อาจเกิดขึ้นได้
+  
+  // ตรวจสอบว่าเลขบัตรประชาชนมีความยาว 13 หลักหรือไม่
+  if (filter.length !== 13 || isNaN(filter)) {
+    alert("โปรดป้อนเลขบัตรประชาชนที่ถูกต้อง (13 หลัก)");
+    return;
+  }
+
+  // ค้นหาในทุกคอลัมน์
+  table = document.querySelector("table");
+  tr = table.getElementsByTagName("tr");
+
+  for (i = 0; i < tr.length; i++) {
+    var found = false; // เพิ่มตัวแปรเพื่อตรวจสอบว่าพบข้อมูลหรือไม่
+
+    for (j = 0; j < tr[i].cells.length; j++) {
+      td = tr[i].getElementsByTagName("td")[j];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        // เปรียบเทียบข้อมูลในคอลัมน์กับค่าที่ค้นหา
+        if (txtValue.trim() === filter) {
+          found = true;
+          break;
+        }
+      }
+    }
+
+    if (found) {
+      tr[i].style.display = ""; // แสดงแถวที่พบข้อมูล
+    } else {
+      // ตรวจสอบว่าอิลิเมนต์ที่กำลังตรวจสอบเป็น <th> หรือไม่
+      if (tr[i].getElementsByTagName("th").length === 0) {
+        tr[i].style.display = "none"; // ซ่อนแถวที่ไม่พบข้อมูล
+      }
+    }
+  }
+}
+
+
+</script>
+
+
+<div class="search-container2">
+  <select id="statusFilter">
+    <option value="">ทั้งหมด</option>
+    <option value="อยู่ในสัญญา">อยู่ในสัญญา</option>
+    <option value="เลยกำหนดสัญญา">เลยกำหนดสัญญา</option>
+    <option value="ชำระครบ">ชำระครบ</option>
+    <option value="เเ">เเบล็คลิช</option>
+  </select>
+  <button type="button" onclick="searchIdCard()">ค้นหาสถานะ</button>
+</div>
+
+<script>
+  function searchIdCard() {
+    var statusFilter, table, tr, i, found;
+    statusFilter = document.getElementById("statusFilter").value; // รับค่าจาก dropdown
+  
+    // ค้นหาในทุกคอลัมน์
+    table = document.querySelector("table");
+    tr = table.getElementsByTagName("tr");
+  
+    for (i = 0; i < tr.length; i++) {
+      found = false; // เพิ่มตัวแปรเพื่อตรวจสอบว่าพบข้อมูลหรือไม่
+  
+      // เปรียบเทียบค่าในคอลัมน์สถานะสัญญาเท่ากับค่าที่เลือกใน dropdown
+      if (tr[i].cells[6].innerText.trim() === statusFilter || statusFilter === "") {
+        found = true;
+      }
+  
+      if (found) {
+        tr[i].style.display = ""; // แสดงแถวที่พบข้อมูล
+      } else {
+        // ตรวจสอบว่าอิลิเมนต์ที่กำลังตรวจสอบเป็น <th> หรือไม่
+        if (tr[i].getElementsByTagName("th").length === 0) {
+          tr[i].style.display = "none"; // ซ่อนแถวที่ไม่พบข้อมูล
+        }
+      }
+    }
+  }
+  </script>
+  
+  
+  <script src="เชื่อม.js" ></script>
+
+<table id="table">
+  <tr>
+    <th>วันที่</th>
+    <th>รหัสลูกค้า</th>
+    <th>เลขบัตรประชาชน</th>
+    <th>ชื่อ</th>
+    <th>นามสกุล</th>
+    <th>เบอร์โทรศัพท์</th>
+    <th>สถานะ</th>
+    <th>ยอดหนี้ค้างชำระ</th>
+    <th>รูปบัตรประชาชน</th>
+  </tr>
+</table>
+
+</body>
+</html>
